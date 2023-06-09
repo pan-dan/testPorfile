@@ -168,54 +168,6 @@ def pageNotFount(error):
 #def profile():
 #    return render_template("profile.html")
 
-#!!!!!!!!!!!!!!!!!! Старая авторизация
-# @app.route('/login', methods=['GET', 'POST'])
-# def form_authorization():
-#     if request.method == 'POST':
-#         Login = request.form.get('Login')
-#         Password = request.form.get('Password')
-#
-#         db_lp = sqlite3.connect('login_password.db')
-#         cursor_db = db_lp.cursor()
-#         cursor_db.execute(('''SELECT password FROM passwords
-#                                                WHERE login = '{}';
-#                                                ''').format(Login))
-#         pas = cursor_db.fetchall()
-#
-#         cursor_db.close()
-#         try:
-#             if pas[0][0] != Password:
-#                 return render_template('auth_bad.html')
-#         except:
-#             return render_template('auth_bad.html')
-#
-#         db_lp.close()
-#         return render_template('successauth.html')
-#
-#     return render_template('login.html')
-
-
-#!!!!!!!!!!!!!!!!!! Старая регистрация
-# @app.route('/signup', methods=['GET', 'POST'])
-# def form_registration():
-#     if request.method == 'POST':
-#         Login = request.form.get('Login')
-#         Password = request.form.get('Password')
-#
-#         db_lp = sqlite3.connect('login_password.db')
-#         cursor_db = db_lp.cursor()
-#         sql_insert = '''INSERT OR IGNORE INTO passwords VALUES('{}','{}');'''.format(Login, Password)
-#
-#         cursor_db.execute(sql_insert)
-#
-#         cursor_db.close()
-#
-#         db_lp.commit()
-#         db_lp.close()
-#
-#         return render_template('successregis.html')
-#     return render_template('signup.html')
-
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!! about
 @app.route("/register", methods=["POST", "GET"])
