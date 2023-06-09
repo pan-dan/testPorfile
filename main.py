@@ -1,8 +1,9 @@
 from flask import Flask, render_template, url_for, request, redirect, current_app, g, flash, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from FDataBase import FDataBase
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from UserLogin import UserLogin
 import sqlite3
 import os
 
@@ -16,6 +17,16 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'data.db')))
 app.config['SECRET_KEY'] = 'fdgdfgdfggf786hfg6hfg6h7f'
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = "Авторизируйтесь для доступа к закрытым страницам"
+login_manager.login_message_category = "success"
+@login_manager.user_loader
+def load_user(user_id):
+    print("load user")
+    return UserLogin().fromDB(user_id, dbase)
+#   !!!!! Print можно убрать
 
 
 def connect_db():
@@ -66,6 +77,7 @@ def addPost():
 
 
 @app.route("/post/<alias>")
+@login_required
 def showPost(alias):
     title, post = dbase.getPost(alias)
     if not title:
@@ -110,22 +122,22 @@ def pageNotFount(error):
     return render_template('page404.html', title="Страница не найдена", menu=menu)
 
 
-@app.route("/log", methods=["POST", "GET"])
-def login():
-    if 'userLogged' in session:
-        return redirect(url_for('profile', username=session['userLogged']))
-    elif request.method == 'POST' and request.form['username'] == "admin" and request.form['psw'] == "123":
-        session['userLogged'] = request.form['username']
-        return redirect(url_for('profile', username=session['userLogged']))
+# @app.route("/log", methods=["POST", "GET"])
+# def login():
+#     if 'userLogged' in session:
+#         return redirect(url_for('profile', username=session['userLogged']))
+#     elif request.method == 'POST' and request.form['username'] == "admin" and request.form['psw'] == "123":
+#         session['userLogged'] = request.form['username']
+#         return redirect(url_for('profile', username=session['userLogged']))
+#
+#     return render_template('log.html', title="", menu=menu)
 
-    return render_template('log.html', title="", menu=menu)
 
-
-@app.route("/profile/<username>")
-def profile(username):
-    if 'userLogged' not in session or session['userLogged'] != username:
-        abort(401)
-    return f"Пользователь: {username}"
+# @app.route("/profile/<username>")
+# def profile(username):
+#     if 'userLogged' not in session or session['userLogged'] != username:
+#         abort(401)
+#     return f"Пользователь: {username}"
 
 
 
@@ -155,33 +167,34 @@ def profile(username):
 #def profile():
 #    return render_template("profile.html")
 
+#!!!!!!!!!!!!!!!!!! Старая авторизация
+# @app.route('/login', methods=['GET', 'POST'])
+# def form_authorization():
+#     if request.method == 'POST':
+#         Login = request.form.get('Login')
+#         Password = request.form.get('Password')
+#
+#         db_lp = sqlite3.connect('login_password.db')
+#         cursor_db = db_lp.cursor()
+#         cursor_db.execute(('''SELECT password FROM passwords
+#                                                WHERE login = '{}';
+#                                                ''').format(Login))
+#         pas = cursor_db.fetchall()
+#
+#         cursor_db.close()
+#         try:
+#             if pas[0][0] != Password:
+#                 return render_template('auth_bad.html')
+#         except:
+#             return render_template('auth_bad.html')
+#
+#         db_lp.close()
+#         return render_template('successauth.html')
+#
+#     return render_template('login.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def form_authorization():
-    if request.method == 'POST':
-        Login = request.form.get('Login')
-        Password = request.form.get('Password')
 
-        db_lp = sqlite3.connect('login_password.db')
-        cursor_db = db_lp.cursor()
-        cursor_db.execute(('''SELECT password FROM passwords
-                                               WHERE login = '{}';
-                                               ''').format(Login))
-        pas = cursor_db.fetchall()
-
-        cursor_db.close()
-        try:
-            if pas[0][0] != Password:
-                return render_template('auth_bad.html')
-        except:
-            return render_template('auth_bad.html')
-
-        db_lp.close()
-        return render_template('successauth.html')
-
-    return render_template('login.html')
-
-
+#!!!!!!!!!!!!!!!!!! Старая регистрация
 # @app.route('/signup', methods=['GET', 'POST'])
 # def form_registration():
 #     if request.method == 'POST':
@@ -220,6 +233,39 @@ def register():
             flash("Неверно заполнены поля", "error")
 
     return render_template("register.html")
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+
+    if request.method == "POST":
+        user = dbase.getUserByEmail(request.form['email'])
+        if user and check_password_hash(user['psw'], request.form['psw']):
+            userlogin = UserLogin().create(user)
+            rm = True if request.form.get('remainme') else False
+            login_user(userlogin, remember=rm)
+            return redirect(request.args.get("next") or url_for("profile"))
+
+        flash("Неверная пара логин/пароль", "error")
+
+    return render_template("login.html", menu=dbase.getMenu(), title="Авторизация")
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return f"""<p><a href="{url_for('logout')}">Выйти из профиля</a>
+                <p>user info: {current_user.get_id()}"""
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("Вы вышли из аккаунта", "success")
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
