@@ -1,4 +1,4 @@
-from flask_login import UserMixin
+#from flask_login import UserMixin
 
 class UserLogin():
     def fromDB(self, user_id, db):
@@ -11,3 +11,12 @@ class UserLogin():
 
     def get_id(self):
         return str(self.__user['id'])
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
