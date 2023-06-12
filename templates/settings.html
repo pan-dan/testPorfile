@@ -23,30 +23,37 @@
     </div>
   </header>
 
-    <section class="container box-section" style="width: 1000px; background-color: #E5DFDA; border-radius: 25px; padding-top: 20px; padding-bottom: 20px">
+    <section class="container box-section" style="width: 1000px; background-color: #E5DFDA; border-radius: 25px; padding-top: 20px; padding-bottom: 400px">
     <h1 class="display-4 fw-normal" style="text-align: center; color: #6D6D6D; padding-top: 20px">Настройки</h1>
 
-        <div class="space" style="padding: 20px; margin: 10px 225px 20px 225px; height: 450px; justify-content: center; display: flex; align-items: center; font-weight: bold">
-        <form method="POST">
+    <div class="space" style="padding: 20px; margin: 10px 225px 20px 225px; height: 450px; justify-content: center; display: flex; align-items: center; font-weight: bold">
+        <form method="POST", action="/changeInformation">
             <div class="container">
-                <label for="FirstName"><b style="margin-left: 200px">Имя</b></label>
-                <input type="text" style="margin-top: 10px; height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="login" value="" required>
-                <br>
-                <label for="LastName"><b style="margin-left: 200px">Фамилия</b></label>
-                <input type="text" style="margin-top: 10px; height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="email" value="" required>
-                <br>
-                <label for="Country"><b style="margin-left: 200px">Страна</b></label>
-                <input type="password" style="margin-top: 10px; height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="psw" value="" required>
-                <br>
-                <label for="City" style="margin-top: 20px; margin-bottom: 10px; margin-left: 200px"><b>Город</b></label>
-                <input type="password" style="height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="psw2" value="" required>
-                <br>
-                <button type="submit" class="box">Зарегистрироваться</button>
-<!--            </div>-->
+                <div style="margin-bottom: 20px;">
+                    <label for="first_name"><b style="margin-left: 200px">Имя</b></label>
+                    <input type="text" style="margin-top: 10px; height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="first_name" value="" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="last_name"><b style="margin-left: 200px">Фамилия</b></label>
+                    <input type="text" style="margin-top: 10px; height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="last_name" value="" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="country"><b style="margin-left: 200px">Страна</b></label>
+                    <input type="text" style="margin-top: 10px; height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="country" value="" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="city" style="margin-top: 20px; margin-bottom: 10px; margin-left: 200px"><b>Город</b></label>
+                    <input type="text" style="height: 75px; width: 460px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px" placeholder="" name="city" value="" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="blog" style="margin-top: 20px; margin-bottom: 10px; margin-left: 200px"><b>О себе</b></label>
+                     <textarea style="height: 275px; width: 800px; border: solid #FF9A37; border-radius: 20px; box-shadow: 0px 0px 5px 2px #f4cc85; font-size: 35px; resize: vertical;" placeholder="" name="blog" required></textarea>
+                </div>
+                <button type="submit" class="box">Изменить информацию</button>
+            </div>
         </form>
-        </div>
-
-    </section>
+    </div>
+</section>
 
 </div>
 </body>

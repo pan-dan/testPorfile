@@ -18,5 +18,10 @@ login text NOT NULL,
 email text NOT NULL,
 psw text NOT NULL,
 avatar BLOB DEFAULT NULL,
+first_name text DEFAULT NULL,
+last_name text DEFAULT NULL,
+country text DEFAULT NULL,
+city text DEFAULT NULL,
+blog text DEFAULT NULL,
 time integer NOT NULL
 );

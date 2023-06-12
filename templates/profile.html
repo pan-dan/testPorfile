@@ -18,7 +18,7 @@
         <span style="color: #FF4500; font-weight: bold; font-size: 30px">Just Post IT</span>
       </a>
       <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <img width="55px" height="55px" src="https://png.pngtree.com/png-vector/20190330/ourlarge/pngtree-vector-avatar-icon-png-image_889929.jpg" alt="ava" style="margin-right: 75px">
+          <form action="logout"><button class="btn btn-primary" type="submit" style="margin-right: 25px; color: black; background-color: white; border: solid #FF9A37; border-radius: 20px; width: 175px; box-shadow: 0px 0px 5px 2px #f4cc85">Выйти из профиля</button></form>
       </nav>
     </div>
   </header>
@@ -28,16 +28,30 @@
         <h1 style="text-align: center; font-weight: bold">Фамилия Имя</h1>
         <div class="space" style="padding: 20px; border-radius: 30px; margin: 10px 225px 20px 225px;
                                   height: 175px; width: 543px; justify-content: center; display: flex; align-items: center; font-weight: bold;
-                                  margin-left: auto; margin-right: auto; background-color: #F1F1F1">
-            Здесь будет инфрмация о себе, которую заполняли ранее или будет возможность нажать сюда и написать всё, что нужно
+                                  margin-left: auto; margin-right: auto; background-color: #F1F1F1"> {{ blog }}
+        </div>
             <div class="profile-ava" style="box-sizing: border-box; position: absolute; width: 200px; height: 200px; left: 153px; top: 102px; background: url(image.png); border: 1px solid #000000;"><img src="{{ url_for('userava') }}"> </div>
 <!--            Нужно будет это как-то норм вставить, хз как это сделать(-->
-        </div>
+            </div>
     </section>
     <section class="container box-section" style="background-color: white; border-radius: 25px; padding-top: 20px;
     padding-bottom: 20px; box-shadow: 0px 0px 5px 2px #919191; margin-top: 50px; height: 100px">
 
-    <form action="settings"><button class="btn btn-primary" type="submit" style="margin-right: 25px; color: black; background-color: white; border: solid #FF9A37; border-radius: 20px; width: 175px; box-shadow: 0px 0px 5px 2px #f4cc85">Настройки</button></form>
+    <div>
+  <form action="settings" style="display: inline-block;">
+    <button class="btn btn-primary" type="submit" style="margin-right: 25px; color: black; background-color: white; border: solid #FF9A37; border-radius: 20px; width: 175px; box-shadow: 0px 0px 5px 2px #f4cc85">Настройки</button>
+  </form>
+  <form action="add_post" style="display: inline-block;">
+    <button class="btn btn-primary" href="add_post" style="margin-right: 25px; color: black; background-color: white; border: solid #FF9A37; border-radius: 20px; width: 175px; box-shadow: 0px 0px 5px 2px #f4cc85">Добавить пост</button>
+  </form>
+        <form action="{{url_for('upload')}}" method="POST" enctype="multipart/form-data" style="display: inline-block;">
+    <button class="btn btn-primary" type="submit" style="margin-right: 25px; color: black; background-color: white; border: solid #FF9A37; border-radius: 20px; width: 175px; box-shadow: 0px 0px 5px 2px #f4cc85">Выбрать аватар
+    <input type="file" name="file"></button>
+    <button class="btn btn-primary" type="submit" style="margin-right: 25px; color: black; background-color: white; border: solid #FF9A37; border-radius: 20px; width: 175px; box-shadow: 0px 0px 5px 2px #f4cc85">Загрузить аватар
+    <input type="submit" value="Загрузить"></button>
+            </form>
+</div>
+
     </section>
 <!--    У меня появилась идея здесь сделать кнопки некоторые, хз как получится в итоге и норм идея или нет-->
 

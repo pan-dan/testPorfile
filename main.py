@@ -213,7 +213,7 @@ def login():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template("profile.html", menu=dbase.getMenu(), title="Профиль")
+    return render_template("profile.html", menu=dbase.getMenu(), title="Профиль", blog=dbase.getBlog(current_user.get_id()))
 
 
 @app.route('/logout')
@@ -260,6 +260,50 @@ def upload():
 @login_required
 def settings():
     return render_template("settings.html", menu=dbase.getMenu(), title="Настройки")
+
+
+@app.route('/changeInformation', methods=['GET', 'POST'])
+@login_required
+def changeInformation():
+    if request.method == 'POST':
+        # Ваш код обработки POST-запроса
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        country = request.form['country']
+        city = request.form['city']
+        blog = request.form['blog']
+
+        try:
+            res = dbase.updateUserInformation(current_user.get_id(), first_name, last_name, country, city, blog)
+            if not res:
+                flash("Ошибка обновления информации", "error")
+            else:
+                flash("Информация обновлена", "success")
+        except Exception as e:
+            flash("Ошибка обновления информации", "error")
+
+        return redirect(url_for('profile'))
+
+    # Ваш код для GET-запроса
+    return render_template('settings.html')  # Замените 'change_information.html' на ваш шаблон
+
+
+# @app.route('/takeBlog', methods=['GET', 'POST'])
+# def takeBlog():
+#     db = get_db()
+#     dbase = FDataBase(db)
+#     blog = dbase.getBlog(current_user.get_id())
+#     if not blog:
+#         return "Здесь будет информация о себе, которую заполняли ранее или будет возможность нажать сюда и написать всё, что нужно"
+#
+#     return render_template('profile.html', menu=dbase.getMenu(), blog=blog)
+
+
+    # Получение данных из базы данных (database_rows должна быть заполнена данными из базы данных)
+    # database_rows = takeBlog(current_user.get_id(), current_user.get_blog())
+    #
+    # return render_template('index.html', database_rows=database_rows)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
